@@ -23,15 +23,21 @@ graphql_object!(QueryRoot: () |&self| {
             age: "22".to_owned(),
             name: "Dmitry".to_owned(),
         })
+    },
+    field user_old(&executor) -> FieldResult<User> {
+        Ok(User{
+            age: "63".to_owned(),
+            name: "Alex".to_owned(),
+        })
     }
 });
 
 pub struct MutationRoot;
 
 graphql_object!(MutationRoot: () |&self| {
-    field createHuman(&executor, new_user: NewUser) -> FieldResult<User> {
+    field newUser(&executor, new_user: NewUser) -> FieldResult<User> {
         Ok(User{
-            age: new_user.age,
+            age: format!("age-{}", new_user.age),
             name: new_user.name,
         })
     }
